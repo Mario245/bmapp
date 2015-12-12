@@ -1,0 +1,15 @@
+<%= simple_form_for(@building) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :address %>
+    <%= f.input :no_of_floors %>
+    <%= f.input :total_apts %>
+    <%= f.input :long %>
+    <%= f.input :lat %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
