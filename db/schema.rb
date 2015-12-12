@@ -11,7 +11,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151212221421) do
+ActiveRecord::Schema.define(version: 20151212224247) do
+
+  create_table "apartments", force: :cascade do |t|
+    t.integer  "no_of_bedrooms"
+    t.float    "rent"
+    t.string   "apt_no"
+    t.integer  "no_of_floors"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "message_id"
+  end
+
+  add_index "apartments", ["message_id"], name: "index_apartments_on_message_id"
+
+  create_table "buildings", force: :cascade do |t|
+    t.string   "address"
+    t.integer  "no_of_floors"
+    t.integer  "total_apts"
+    t.float    "long"
+    t.float    "lat"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "building_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "companies", ["building_id"], name: "index_companies_on_building_id"
 
   create_table "messages", force: :cascade do |t|
     t.string   "to"
@@ -49,12 +81,14 @@ ActiveRecord::Schema.define(version: 20151212221421) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.string   "message_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count"
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id"
+  add_index "users", ["message_id"], name: "index_users_on_message_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
