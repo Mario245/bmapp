@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151212224247) do
+ActiveRecord::Schema.define(version: 20151214031104) do
 
   create_table "apartments", force: :cascade do |t|
     t.integer  "no_of_bedrooms"
@@ -33,11 +33,14 @@ ActiveRecord::Schema.define(version: 20151212224247) do
     t.float    "lat"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "company_id"
+    t.string   "apartment_id"
   end
 
+  add_index "buildings", ["apartment_id"], name: "index_buildings_on_apartment_id"
+  add_index "buildings", ["company_id"], name: "index_buildings_on_company_id"
+
   create_table "companies", force: :cascade do |t|
-    t.string   "name"
-    t.string   "address"
     t.string   "building_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -45,11 +48,53 @@ ActiveRecord::Schema.define(version: 20151212224247) do
 
   add_index "companies", ["building_id"], name: "index_companies_on_building_id"
 
+  create_table "employees", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "leases", force: :cascade do |t|
+    t.string   "user_id"
+    t.string   "apartment_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "leases", ["apartment_id"], name: "index_leases_on_apartment_id"
+  add_index "leases", ["user_id"], name: "index_leases_on_user_id"
+
   create_table "messages", force: :cascade do |t|
     t.string   "to"
     t.string   "from"
     t.text     "body"
     t.string   "category"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "user_id"
+    t.string   "apartment_id"
+  end
+
+  add_index "messages", ["apartment_id"], name: "index_messages_on_apartment_id"
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id"
+
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name"
+    t.string   "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "user_id"
+    t.string   "phone_no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
+
+  create_table "tenants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -82,6 +127,7 @@ ActiveRecord::Schema.define(version: 20151212224247) do
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
     t.string   "message_id"
+    t.string   "profile_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
@@ -89,6 +135,7 @@ ActiveRecord::Schema.define(version: 20151212224247) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count"
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id"
   add_index "users", ["message_id"], name: "index_users_on_message_id"
+  add_index "users", ["profile_id"], name: "index_users_on_profile_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
