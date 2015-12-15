@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
   resources :profiles
   resources :companies
-  resources :buildings
-  resources :apartments
-  resources :messages
+   
+
+  resources :buildings do
+    resources :apartments
+    resources :messages
+  end
+   
+
+
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|
       resources dashboard_resource

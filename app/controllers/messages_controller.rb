@@ -1,10 +1,12 @@
 class MessagesController < ApplicationController
+  before_filter :find_building
+  begore_filter :find_message, :only => [:show, :edit, :update, :destroy]
   before_action :set_message, only: [:show, :edit, :update, :destroy]
 
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.all
+    
   end
 
   # GET /messages/1
@@ -14,7 +16,7 @@ class MessagesController < ApplicationController
 
   # GET /messages/new
   def new
-    @message = Message.new
+     @messages = @building.messages.build
   end
 
   # GET /messages/1/edit
@@ -24,18 +26,18 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    @message = Message.new(message_params)
+    @message = @building.messages.build(message_params)
 
-    respond_to do |format|
+ 
       if @message.save
-        format.html { redirect_to @message, notice: 'Message was successfully created.' }
-        format.json { render :show, status: :created, location: @message }
+        flash[:notice] = "Ticket has been created"
+        redirect_to [@building, @message]
       else
-        format.html { render :new }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
+        flash[:alert] = "Ticket has not been created"
+        render :action => "new"
       end
     end
-  end
+
 
   # PATCH/PUT /messages/1
   # PATCH/PUT /messages/1.json
@@ -54,14 +56,23 @@ class MessagesController < ApplicationController
   # DELETE /messages/1
   # DELETE /messages/1.json
   def destroy
-    @message.destroy
-    respond_to do |format|
-      format.html { redirect_to messages_url, notice: 'Message was successfully destroyed.' }
-      format.json { head :no_content }
+      @message.destroy
+      respond_to do |format|
+      flash[:notice] = "Work Request has been deleted."
+      redirect_to @building
     end
   end
 
   private
+    def find_building
+      @building = Building.find(params[:building_id])
+    end
+
+     def find_message
+      @message = @building.messages.find(params[:id])
+    end
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_message
       @message = Message.find(params[:id])

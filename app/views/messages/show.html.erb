@@ -20,5 +20,7 @@
   <%= @message.category %>
 </p>
 
-<%= link_to 'Edit', edit_message_path(@message) %> |
+<%= link_to 'Edit', edit_building_message_path(@building, @message) %> 
+<%= link_to "Delete Work Request", (@building, @message), :method => :delete,
+             :confirm => "Are you sure you want to delete this work request?" %>
 <%= link_to 'Back', messages_path %>

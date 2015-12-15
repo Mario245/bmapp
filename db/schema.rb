@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214031104) do
+ActiveRecord::Schema.define(version: 20151214154238) do
 
   create_table "apartments", force: :cascade do |t|
     t.integer  "no_of_bedrooms"
@@ -35,10 +35,12 @@ ActiveRecord::Schema.define(version: 20151214031104) do
     t.datetime "updated_at",   null: false
     t.string   "company_id"
     t.string   "apartment_id"
+    t.string   "message_id"
   end
 
   add_index "buildings", ["apartment_id"], name: "index_buildings_on_apartment_id"
   add_index "buildings", ["company_id"], name: "index_buildings_on_company_id"
+  add_index "buildings", ["message_id"], name: "index_buildings_on_message_id"
 
   create_table "companies", force: :cascade do |t|
     t.string   "building_id"
@@ -72,9 +74,11 @@ ActiveRecord::Schema.define(version: 20151214031104) do
     t.datetime "updated_at",   null: false
     t.string   "user_id"
     t.string   "apartment_id"
+    t.string   "buildings_id"
   end
 
   add_index "messages", ["apartment_id"], name: "index_messages_on_apartment_id"
+  add_index "messages", ["buildings_id"], name: "index_messages_on_buildings_id"
   add_index "messages", ["user_id"], name: "index_messages_on_user_id"
 
   create_table "organizations", force: :cascade do |t|
@@ -82,6 +86,7 @@ ActiveRecord::Schema.define(version: 20151214031104) do
     t.string   "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "type"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -128,6 +133,7 @@ ActiveRecord::Schema.define(version: 20151214031104) do
     t.integer  "invitations_count",      default: 0
     t.string   "message_id"
     t.string   "profile_id"
+    t.string   "type"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

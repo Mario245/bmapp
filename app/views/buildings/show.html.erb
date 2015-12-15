@@ -25,5 +25,13 @@
   <%= @building.lat %>
 </p>
 
+<ul id='Work Requests'>
+  <% @building.messages.each do |message| %>
+    <li>
+      #<%= message.id %> - <%= link_to message.body, [@building, message] %>
+    </li>
+   <% end %>
+</ul>
+
 <%= link_to 'Edit', edit_building_path(@building) %> |
 <%= link_to 'Back', buildings_path %>
